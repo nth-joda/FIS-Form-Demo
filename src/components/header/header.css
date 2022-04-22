@@ -1,0 +1,18 @@
+.header {
+  background: var(--color-bg-primary);
+  padding: 0.7rem 3rem;
+}
+
+.header__title {
+  display: inline-block;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.header__close {
+  display: inline-block;
+  font-size: 2rem;
+  float: right;
+  color: var(--color-bg-red);
+  cursor: pointer;
+}

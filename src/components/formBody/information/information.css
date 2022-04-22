@@ -1,0 +1,113 @@
+.information {
+  padding: 1.5rem 1.5rem;
+}
+form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.information h2 {
+  font-size: 2rem;
+  color: var(--color-text-gray);
+}
+
+.information form {
+  font-size: 1.2rem;
+}
+
+.information h2,
+form {
+  margin-bottom: 2rem;
+  color: var(--color-text-gray);
+}
+
+.formField {
+  display: grid;
+  grid-template-columns: 35% 60%;
+  gap: 2rem;
+}
+
+.formField__input {
+  display: inline-block;
+  padding: 0.7rem 1rem;
+  border: var(--border);
+  border-radius: 0.5rem;
+  display: center;
+}
+.formField__input input {
+  width: 100%;
+  font-size: 1rem;
+  background: transparent;
+}
+.formField__input input:focus {
+  outline: none;
+}
+
+#saveContent__textarea {
+  resize: none;
+  width: 100%;
+  font-size: 1.5rem;
+  background-color: transparent;
+}
+#noiDung {
+  width: max-content;
+  font-size: 3rem;
+  margin-right: 0.7rem;
+}
+
+#saveContent__textarea:focus {
+  outline: 0;
+}
+
+.cta {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1rem;
+}
+
+.cta button {
+  border: var(--border);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  margin-right: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--color-bg-primary);
+  color: var(--color-white);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--color-bg-primary);
+  border-color: var(--color-bg-primary);
+}
+
+.btn-red {
+  background-color: var(--color-bg-red);
+  color: var(--color-white);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-red:hover {
+  background-color: transparent;
+  color: var(--color-bg-red);
+  border-color: var(--color-bg-red);
+}
+
+.warning-message {
+  color: var(--color-bg-red);
+  font-size: 1rem;
+}
+
+.warning-sign {
+  color: var(--color-bg-red);
+}
+
+.formField__input Box {
+  border-color: transparent;
+}
