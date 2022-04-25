@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./uploadImages.css";
 const UploadImages = (props) => {
-  const [image, setImage] = useState();
-
   const onImageChange = (e) => {
-    setImage(e.target.files[0]);
     props.changeImage(e.target.files[0]);
   };
   return (
