@@ -35,12 +35,12 @@ form {
   border-radius: 0.5rem;
   display: center;
 }
-.formField__input input {
+.formField__input > input {
   width: 100%;
   font-size: 1rem;
   background: transparent;
 }
-.formField__input input:focus {
+.formField__input > input:focus {
   outline: none;
 }
 
@@ -110,4 +110,18 @@ form {
 
 .formField__input Box {
   border-color: transparent;
+}
+
+/* --------------formField__input-multiCheck---------- */
+.formField__input-multiCheck {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  padding: 0.5rem;
+}
+
+.formField__input-multiCheck label > input {
+  transform: scale(1.2);
+  margin-right: 0.5rem;
+  text-align: center;
 }
