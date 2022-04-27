@@ -324,12 +324,7 @@ const Information = (props) => {
   }, [formik.values.loaiGiayTo]);
 
   const handleImage = (img) => {
-    formik.setFieldValue("image", {
-      name: img.name,
-      type: img.type,
-      size: img.size,
-      url: URL.createObjectURL(img),
-    });
+    formik.setFieldValue("image", img);
   };
   return (
     <div className="information">
