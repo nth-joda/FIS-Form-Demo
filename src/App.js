@@ -1,7 +1,5 @@
 import "./App.css";
-
-import FormikForm from "./components/Forms/FormikForm";
-import MyForm from "./components/Forms/MyForm";
+import React from "react";
 import PopupForm from "./components/popupForm/PopupForm";
 
 function App() {

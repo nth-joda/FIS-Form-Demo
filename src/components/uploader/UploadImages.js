@@ -23,7 +23,7 @@ const UploadImages = (props) => {
         // console.log(baseURL);
         resolve(baseURL);
       };
-      console.log("done");
+      // console.log("done");
     });
   };
 
@@ -34,7 +34,7 @@ const UploadImages = (props) => {
     getBase64(file)
       .then((result) => {
         file["base64"] = result;
-        console.log("File Is", file);
+        // console.log("File Is", file);
         setState({
           base64URL: result,
           file,
@@ -42,7 +42,7 @@ const UploadImages = (props) => {
         props.changeImage(file);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
 
     setState({ file: e.target.files[0] });

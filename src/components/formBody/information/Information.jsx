@@ -283,8 +283,12 @@ const options = [
 
 const Information = (props) => {
   const onPreview = () => {
-    console.log(formik.values.cotNoiDung);
-    if (formik.values.cotNoiDung !== [] && formik.values.image.name) {
+    // console.log(formik.values.cotNoiDung);
+    if (
+      formik.values.cotNoiDung !== [] &&
+      formik.values.frontImage &&
+      formik.values.postImage
+    ) {
       props.onBindingPreview(formik.values);
     } else alert("Điền đầy đủ các mục bắt buộc");
   };
@@ -297,17 +301,22 @@ const Information = (props) => {
     initialValues: {
       fileType: "image",
       loaiGiayTo: 0,
-      cotNoiDung: options[0].fields.map(function (item) {
+      cotNoiDung: options[0].fields.map(function(item) {
         return item.field;
       }),
-      image: {},
+      frontImage: {},
+      PostImage: {},
     },
     validationSchema: Yup.object({
       fileType: Yup.string().required("Required!"),
       cotNoiDung: Yup.array().required("Required!"),
     }),
     onSubmit: (values) => {
-      if (formik.values.cotNoiDung !== [] && formik.values.image.name) {
+      if (
+        formik.values.cotNoiDung !== [] &&
+        formik.values.frontImage &&
+        formik.values.postImage
+      ) {
         props.onBindingPreview(formik.values);
         alert("Biểu mẫu đã lưu thành công!");
         formik.resetForm();
@@ -317,20 +326,24 @@ const Information = (props) => {
 
   useEffect(() => {
     formik.values.cotNoiDung = options[formik.values.loaiGiayTo].fields.map(
-      function (item) {
+      function(item) {
         return item.field;
       }
     );
   }, [formik.values.loaiGiayTo]);
 
-  const handleImage = (img) => {
-    formik.setFieldValue("image", img);
+  const handleFrontImage = (img) => {
+    formik.setFieldValue("frontImage", img);
+  };
+
+  const handlePostImage = (img) => {
+    formik.setFieldValue("postImage", img);
   };
   return (
     <div className="information">
       <h2>Thông tin nhận dạng</h2>
       <form onSubmit={formik.handleSubmit}>
-        <div className="formField">
+        <div className="formField" style={{ display: "none" }}>
           <label className="required">
             Văn bản cần nhận dạng <span className="warning-sign">(*)</span>
           </label>
@@ -349,12 +362,12 @@ const Information = (props) => {
         </div>
 
         <div className="formField">
-          <label>Loại văn bản</label>
+          <label>Loại giấy tờ nhận dạng</label>
           <div>
             <TextField
               id="outlined-select-currency"
               select
-              label="Chọn loại văn bản"
+              label="Chọn loại giấy tờ"
               onChange={formik.handleChange}
               value={formik.values.loaiGiayTo}
               name="loaiGiayTo"
@@ -371,10 +384,12 @@ const Information = (props) => {
 
         <div className="formField">
           <label className="required">
-            Cột thông tin sẽ lưu <span className="warning-sign">(*)</span>
-            {formik.values.cotNoiDung === [] || !formik.values.image.name ? (
+            Cột thông tin sẽ nhận dạng <span className="warning-sign">(*)</span>
+            {formik.values.cotNoiDung === [] ||
+            !formik.values.frontImage ||
+            !formik.values.postImage ? (
               <p className="warning-message">
-                {"Cột thông tin sẽ lưu không được bỏ trống"}
+                {"Cột thông tin sẽ nhận dạng không được trống"}
               </p>
             ) : null}
           </label>
@@ -398,9 +413,20 @@ const Information = (props) => {
         </div>
 
         <div className="formField">
-          <label>Tải lên hình ảnh</label>
+          <label>
+            Tải lên hình ảnh mặt trước <span className="warning-sign">(*)</span>
+          </label>
           <div>
-            <UploadImages changeImage={handleImage} />
+            <UploadImages changeImage={handleFrontImage} />
+            {/* TODO: reset name of element "input file" in Information component */}
+          </div>
+        </div>
+        <div className="formField">
+          <label>
+            Tải lên hình ảnh mặt sau <span className="warning-sign">(*)</span>
+          </label>
+          <div>
+            <UploadImages changeImage={handlePostImage} />
             {/* TODO: reset name of element "input file" in Information component */}
           </div>
         </div>

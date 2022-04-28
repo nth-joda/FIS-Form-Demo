@@ -11,7 +11,7 @@
 .preview1 {
   border: var(--border);
   width: 100%;
-  min-height: 30%;
+  min-height: 15%;
   border-radius: 1rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -34,4 +34,75 @@ pre {
 
 .preview__img {
   max-width: 100%;
+}
+
+.result_message {
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.green_message {
+  color: var(--color-bg-primary);
+}
+
+.red_message {
+  color: var(--color-bg-red);
+}
+
+.image_showing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.image_showing__item {
+  text-align: center;
+  background: rgba(103, 103, 103, 0.2);
+  padding: 7px;
+  border-radius: 0.5rem;
+}
+
+.image_title {
+  color: var(--color-text-gray);
+  margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.btn-word {
+  color: #4073c4;
+  background-color: transparent;
+  border: 1px solid #4073c4 !important;
+  cursor: pointer;
+}
+
+.btn-word:hover {
+  color: var(--color-white);
+  background-color: #4073c4;
+}
+
+.btn-excel {
+  color: #1d6f42;
+  background-color: transparent;
+  border: 1px solid #1d6f42 !important;
+  cursor: pointer;
+}
+
+.btn-excel:hover {
+  color: var(--color-white);
+  background-color: #1d6f42;
+}
+
+.btn-pdf {
+  color: #fc9403;
+  background-color: transparent;
+  border: 1px solid #fc9403 !important;
+  cursor: pointer;
+}
+
+.btn-pdf:hover {
+  color: var(--color-white);
+  background-color: #fc9403;
 }
