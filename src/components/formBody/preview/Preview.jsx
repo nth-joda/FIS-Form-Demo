@@ -1,8 +1,10 @@
-import React from "react";
-
+import React, {useState} from "react";
+import jsPDF from "jspdf";
+import Fake_Res from "../../../fake_response.json"
 import "./preview.css";
 
 const Preview = (props) => {
+  const fake_res = Fake_Res;
   const toWord = () => {};
 
   const toExcel = () => {
@@ -11,6 +13,11 @@ const Preview = (props) => {
 
   const toPDF = () => {
     alert("Export To PDF");
+    var doc = new jsPDF();
+    doc.setFontSize(8);
+    doc.setFont("Times", "Italic");
+    doc.text(15, 25, fake_res);
+    doc.save("name.pdf");
   };
   return (
     <div className="preview">
@@ -67,15 +74,7 @@ const Preview = (props) => {
 
         {props.messageCode.code !== "OK" && (
           <div>
-            "image":"","hometown":"Thụy Lâm, Đông Anh, Hà Nội","address":"Đào
-            Thục, Thụy Lâm, Đông Anh, Hà
-            Nội","hometown_district_code":"17","address_ward":"Thuỵ
-            Lâm","hometown_town_code":"1","address_ward_code":"460","hometown_ward":"Thuỵ
-            Lâm","hometown_town":"Hà
-            Nội","address_district_code":"17","hometown_district":"Đông
-            Anh","hometown_ward_code":"460","dob":"05-09-1972","name":"ĐINH VĂN
-            HOẠT","address_town_code":"1","id":"012164313","address_district":"Đông
-            Anh","address_town":"Hà Nội"
+            {JSON.stringify(fake_res, null, 4)}
           </div>
         )}
       </div>
