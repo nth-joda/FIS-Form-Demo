@@ -16,6 +16,7 @@ const GetInput = (props) => {
 
     const [chosen_loaiGiayTo, setChosen_loaiGiayTo] = useState(initialLoaiGiayToID);
     const [checked_list, setChecked_list] = useState([]);
+    const [isReset,setIsReset] = useState(false);
     const setInitialData = (id) =>{
         setChosen_loaiGiayTo(id);
         setChecked_list(data.find(x => x.id === id)? data.find(x => x.id === id).fields.map(item => item.field) : [])
@@ -25,8 +26,11 @@ const GetInput = (props) => {
     },[])
 
     useEffect(() => {
+        formik.resetForm();
         setChecked_list(data.find(x => x.id === chosen_loaiGiayTo) ? data.find(x => x.id === chosen_loaiGiayTo).fields.map(item => item.field) : [])
         console.log(chosen_loaiGiayTo)
+        props.onReset();
+        setIsReset(!isReset)
     },[chosen_loaiGiayTo])
 
     const handleFrontImage = (img) => {
@@ -34,6 +38,15 @@ const GetInput = (props) => {
     }
     const handleBackImage = (img) => {
         formik.setFieldValue("backImage", img);
+    }
+
+    const handleSubmit = () => {
+        props.onReset();
+        setIsReset(!isReset);
+        formik.resetForm();
+        alert("Đã lưu thông tin")
+        setInitialData(initialLoaiGiayToID);
+        
     }
 
     const onPreview = () => {
@@ -60,9 +73,11 @@ const GetInput = (props) => {
     }
 
     const onHandleClose = () => {
-        alert("Đang đóng");
+        props.onReset();
+        setIsReset(!isReset);
         formik.resetForm();
-        props.onBindingPreview(formik.values);
+        alert("Đang đóng");
+        setInitialData(initialLoaiGiayToID);
     }
 
 
@@ -211,7 +226,7 @@ const GetInput = (props) => {
                 Tải lên hình ảnh mặt trước <span className="warning-sign">(*)</span>
                 </label>
                 <div>
-                <UploadImages changeImage={handleFrontImage} />
+                <UploadImages changeImage={handleFrontImage} isReset={isReset} />
                 {/* TODO: reset name of element "input file" in Information component */}
                 </div>
             </div>
@@ -225,7 +240,7 @@ const GetInput = (props) => {
                         Tải lên hình ảnh mặt sau <span className="warning-sign">(*)</span>
                     </label>
                 <div>
-                <UploadImages changeImage={handleBackImage} />
+                <UploadImages changeImage={handleBackImage} isReset={isReset}/>
                 {/* TODO: reset name of element "input file" in Information component */}
                 </div>
             </div>
@@ -237,7 +252,7 @@ const GetInput = (props) => {
             <button type="button" onClick={onPreview} className="btn btn-primary">
                 Xem trước
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button type="button" onClick={handleSubmit} className="btn btn-primary">
                 Thực hiện
             </button>
             <button type="button" onClick={onHandleClose} className="btn btn-red">

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import jsPDF from "jspdf";
 import Fake_Res from "../../../fake_response.json"
+import CircularProgress from '@mui/material/CircularProgress';
 import "./preview.css";
 
 const Preview = (props) => {
@@ -64,8 +65,10 @@ const Preview = (props) => {
       <div>
         {props.messageCode.code !== "OK" && (
           <h3 className="result_message red_message">
-            {/* {props.messageCode.message} */}
+            {props.messageCode.code==="noinput" ? props.messageCode.message : <CircularProgress />}
+            
           </h3>
+          
         )}
         {props.messageCode.code === "OK" && (
           <div>

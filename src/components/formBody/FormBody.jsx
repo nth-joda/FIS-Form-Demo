@@ -19,117 +19,95 @@ const FormBody = () => {
     message: "undefined",
     code: "undefined",
   });
-  const handlePreview = (values) => {
-    setPreview(values);
-    let body = {};
-    if (values.loaiGiayTo === 1) {
-      body = {
-        key: front_CMND,
-        imageFrontBase64: values.frontImage.base64,
-        imageType: "DangNhapChungMinhNhanDan",
-      };
-    }
-    if (values.loaiGiayTo === 3) {
-      body = {
-        key: two_Sided_CMND,
-        imageFrontBase64: values.frontImage.base64,
-        imageBackBase64: values.backImage.base64,
-        imageType: "ChungMinhNhanDan",
-      };
-    }
+  function handleReset(){
+    setPreview("")
+    setJsonRes({})
+    setMessageCode({
+      message: "Không có dữ liệu đầu vào",
+      code: "noinput",
+    })
+  }
+    const handlePreview = (values) => {
+      setPreview(values);
+      let body = {};
+      let getResponse = {};
+      
+      if (values.loaiGiayTo === 1) {
+          body = {
+              key: front_CMND,
+              imageFrontBase64: values.frontImage.base64,
+              imageType: "DangNhapChungMinhNhanDan",
+          };
+      }
 
-    axios
-    .post(
-      real_url,
-      body
-    )
-    .then((res) => {
-      const arrayChecked = values.cotNoiDung;
-      if (res.data.code === "OK") {
-        console.log(res)
-        if(res.data.result !== null){
-          const data = JSON.parse(res.data.result.jsonResult);
-          if (data && arrayChecked !== undefined) {
-            var dataInfo = data[0].info;
-            console.log("dtInfo, ArrChecked: ",dataInfo, arrayChecked);
-            var arrayFinal = {};
-            for (let i = 0; i < arrayChecked.length; i++) {
-              var object = dataInfo[arrayChecked[i]] ? { [arrayChecked[i]]: dataInfo[arrayChecked[i]] } : {[arrayChecked[i]] : "undefined"};
-              console.log("ai: "+i,arrayChecked[i]);
-              Object.assign(arrayFinal, object);
-            }
-            console.log("final: asdsad ", arrayFinal);
-            setJsonRes(arrayFinal);
-            console.log("res ", res);
-        }
-        else {
-          setJsonRes(res.data.message)
-        }
-        
-        }
+      if (values.loaiGiayTo === 3) {
+          body = {
+              key: two_Sided_CMND,
+              imageFrontBase64: values.frontImage.base64,
+              imageBackBase64: values.backImage.base64,
+              imageType: "ChungMinhNhanDan",
+          };
       }
       setMessageCode({
-        code: res.data.code,
-        message: res.data.message,
+        message: "loading",
+        code: "loading",
+      })
+      axios
+      .post(
+          real_url,
+          body
+      ).then((res) => {
+          const arrayChecked = values.cotNoiDung;
+          if (res.data.code === "OK") {
+              console.log(res)
+              if(res.data.result !== null){
+                  const data = JSON.parse(res.data.result.jsonResult);
+                  if (data && arrayChecked !== undefined) {
+                      let list_ob = [];
+                      data.map(item =>{
+                          let dataInfo = item.info;
+                          let infor_list = {};
+                          for (let i = 0; i < arrayChecked.length; i++) {
+                              let object = dataInfo[arrayChecked[i]] ? { [arrayChecked[i]]: dataInfo[arrayChecked[i]] }: {};
+                              Object.assign(infor_list, object);
+                          }
+                          if(item.type === "9_id_card_back"){
+                              let back_Ob = {"side": "back_CMND", infor_list};
+                              list_ob.push(back_Ob);
+                          }
+                          else if(item.type === "9_id_card_front"){
+                              let front_Ob = {"side": "front_CMND", infor_list};
+                              list_ob.push(front_Ob);
+                          }
+                      });
+                      Object.assign(getResponse,list_ob)
+                      console.log("Get respone: ", getResponse);
+                      console.log("listOb", list_ob);
+                      setJsonRes(getResponse);
+                  } else {
+                      setJsonRes(res.data.message)
+                  }
+              }
+          }
+          setMessageCode({
+              code: res.data.code,
+              message: res.data.message,
+          });
+      })
+      .catch((err) => {
+          console.log("error at axios req: ", err);
+          alert(err.message);
       });
-    })
-    .catch((err) => {
-      console.log("error at axios req: ", err);
-      alert(err.message);
-    });
-    console.log("Body: ", body);
-    body ={};
+      getResponse = {};
+      console.log("Body: ", body);
+      body ={};
   };
-
-  // useEffect(() => {
-
-  //   if (preview.loaiGiayTo === 1) {
-  //     const body = {
-  //       key: real_key,
-  //       imageFrontBase64: preview.frontImage.base64,
-  //       imageType: "DangNhapChungMinhNhanDan",
-  //     };
-  //     axios
-  //       .post(
-  //         real_url,
-  //         body
-  //       )
-  //       .then((res) => {
-  //         const arrayChecked = preview.cotNoiDung;
-  //         if (res.data.code === "OK") {
-  //           console.log(res)
-  //           const data = JSON.parse(res.data.result.jsonResult);
-  //           if (data && arrayChecked !== undefined) {
-  //             var dataInfo = data[0].info;
-  //             console.log("dtInfo, ArrChecked: ",dataInfo, arrayChecked);
-  //             var arrayFinal = {};
-  //             for (let i = 0; i < arrayChecked.length; i++) {
-  //               var object = dataInfo[arrayChecked[i]] ? { [arrayChecked[i]]: dataInfo[arrayChecked[i]] } : {[arrayChecked[i]] : "undefined"};
-  //               console.log("ai: "+i,arrayChecked[i]);
-  //               Object.assign(arrayFinal, object);
-  //             }
-  //             console.log("final: asdsad ", arrayFinal);
-  //             setJsonRes(arrayFinal);
-  //             console.log("res ", res);
-  //           }
-  //         }
-  //         setMessageCode({
-  //           code: res.data.code,
-  //           message: res.data.message,
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log("error at axios req: ", err);
-  //         alert(err.message);
-  //       });
-  //   }
-  // }, [preview]);
 
   return (
     <div className="formBody">
       {/* <Information onBindingPreview={handlePreview} /> */}
-      <GetInput onBindingPreview={handlePreview} />
-      <Preview preview={preview} jsonRes={jsonRes} messageCode={messageCode} />
+      <GetInput onBindingPreview={handlePreview} onReset={handleReset} />
+      <Preview preview={preview} jsonRes={jsonRes} messageCode={messageCode}  />
       {/* {console.log("passing to", jsonRes)} */}
     </div>
   );

@@ -1,10 +1,24 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import "./uploadImages.css";
 const UploadImages = (props) => {
+  const ref = useRef();
   const [state, setState] = React.useState({
     file: null,
     base64URL: "",
   });
+
+  useEffect(()=>{
+    ref.current.value = "";
+    setState({
+      file: null,
+      base64URL: "",
+    })
+    console.log(props.isReset);
+    console.log(state);
+
+  }, [props.isReset])
+
+
 
   const getBase64 = (file) => {
     return new Promise((resolve) => {
@@ -55,6 +69,7 @@ const UploadImages = (props) => {
       multiple
       accept="image/*"
       onChange={onImageChange}
+      ref={ref}
     />
   );
 };
