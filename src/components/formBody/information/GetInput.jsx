@@ -38,6 +38,7 @@ const GetInput = (props) => {
 
     const onPreview = () => {
         formik.values.cotNoiDung = [...checked_list];
+        formik.values.loaiGiayTo = chosen_loaiGiayTo;
         console.log("Preview: ",formik.values);
         console.log(checked_list);
         if (formik.values.cotNoiDung.length <=0)

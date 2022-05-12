@@ -22,18 +22,18 @@ const FormBody = () => {
   const handlePreview = (values) => {
     setPreview(values);
     let body = {};
-    if (preview.loaiGiayTo === 1) {
+    if (values.loaiGiayTo === 1) {
       body = {
         key: front_CMND,
         imageFrontBase64: values.frontImage.base64,
         imageType: "DangNhapChungMinhNhanDan",
       };
     }
-    if (preview.loaiGiayTo === 3) {
+    if (values.loaiGiayTo === 3) {
       body = {
         key: two_Sided_CMND,
         imageFrontBase64: values.frontImage.base64,
-        imageFrontBase64: values.backImage.base64,
+        imageBackBase64: values.backImage.base64,
         imageType: "ChungMinhNhanDan",
       };
     }
@@ -77,6 +77,8 @@ const FormBody = () => {
       console.log("error at axios req: ", err);
       alert(err.message);
     });
+    console.log("Body: ", body);
+    body ={};
   };
 
   // useEffect(() => {
