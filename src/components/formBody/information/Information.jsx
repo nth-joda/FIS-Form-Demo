@@ -6,7 +6,7 @@ import "./information.css";
 import UploadImages from "../../uploader/UploadImages";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import CND from "../../../cotNhanDang.json"
+import CND from "../../../cotNhanDang copy 2.json"
 
 // TODO: Change this link to the real Database endpoint when the DB is ready.
 const fake_url= `https://abc.xyz.asdas/fakeapi`
@@ -14,40 +14,38 @@ const fake_url= `https://abc.xyz.asdas/fakeapi`
 const Information = (props) => {
   const [options, setOptions] = useState([]);
 
-  useEffect(() => {
-    axios.get(fake_url)
-    .catch(err => { 
-      setOptions(CND.options);
-    })
-  }, []);
-
   const onPreview = () => {
-    console.log(formik.values.cotNoiDung);
-    if (
-      formik.values.cotNoiDung !== [] &&
-      formik.values.frontImage &&
-      formik.values.postImage
-    ) {
-      props.onBindingPreview(formik.values);
-    } else alert("Điền đầy đủ các mục bắt buộc");
+    console.log("Preview: ",formik.values);
+    if (formik.values.cotNoiDung.length <=0)
+    {
+      alert("Điền đầy đủ các mục bắt buộc");
+      return;
+    }
+    if( formik.values.loaiGiayTo === 1 && (Object.keys(formik.values.frontImage).length <=0 ))
+    {
+      alert("Điền đầy đủ các mục bắt buộc");
+      return;
+    }
+    if( formik.values.loaiGiayTo === 3 && ((Object.keys(formik.values.frontImage).length <=0 ) && Object.keys(formik.values.frontImage).length <=0) )
+    {
+      alert("Điền đầy đủ các mục bắt buộc");
+      return;
+    }
+    props.onBindingPreview(formik.values);
   };
+
   const onHandleClose = () => {
     alert("Đang đóng");
     formik.resetForm();
     props.onBindingPreview(formik.values);
   };
-
-  const cotND = options[0] ? options[0].fields.map(function(item) {
-    return item.field;
-  }) : []
-
   const formik = useFormik({
     initialValues: {
       fileType: "image",
-      loaiGiayTo: 0,
-      cotNoiDung: cotND,
+      loaiGiayTo: 1,
+      cotNoiDung: [],
       frontImage: {},
-      PostImage: {},
+      postImage: {},
     },
     validationSchema: Yup.object({
       fileType: Yup.string().required("Required!"),
@@ -55,9 +53,7 @@ const Information = (props) => {
     }),
     onSubmit: (values) => {
       if (
-        formik.values.cotNoiDung !== [] &&
-        formik.values.frontImage &&
-        formik.values.postImage
+        formik.values.cotNoiDung.length > 0 && (formik.values.frontImage || formik.values.postImage)
       ) {
         props.onBindingPreview(formik.values);
         alert("Biểu mẫu đã lưu thành công!");
@@ -66,13 +62,18 @@ const Information = (props) => {
     },
   });
 
+  useEffect(()=>{
+    setOptions(CND.options);
+    formik.values.cotNoiDung = CND.options[0].fields;
+    console.log(CND.options[0].fields)
+  },[])
+
   useEffect(() => {
-    if (options[formik.values.loaiGiayTo]){ formik.values.cotNoiDung = options[formik.values.loaiGiayTo].fields.map(
-      function(item) {
-        return item.field;
-      }
-    );}
-  }, [formik.values.loaiGiayTo]);
+    formik.values.cotNoiDung = CND.options.find(x => x.id === formik.values.loaiGiayTo).fields
+    setOptions(CND.options);
+    console.log(options, formik.values.loaiGiayTo); 
+
+  },[formik.values.loaiGiayTo])
 
   const handleFrontImage = (img) => {
     formik.setFieldValue("frontImage", img);
@@ -137,41 +138,75 @@ const Information = (props) => {
           </label>
           <div className="formField__input">
             <div className="formField__input-multiCheck">
-              {options[formik.values.loaiGiayTo] && options[formik.values.loaiGiayTo].fields.map((field_item) => (
-                <label key={field_item.field}>
-                  <input
-                    type="checkbox"
-                    defaultChecked="checked"
-                    className="multi-input"
-                    name="cotNoiDung"
-                    value={field_item.field}
-                    onChange={formik.handleChange}
-                  />
-                  {field_item.dpName}
-                </label>
-              ))}
+              {
+                options.filter(x => x.id === formik.values.loaiGiayTo).map((item) => {
+                  return item.fields.map((i) =>{
+                    return (
+                    <label key={i.field}>
+                      <input
+                        type="checkbox"
+                        defaultChecked={formik.values.cotNoiDung.find(x => x.field === i.field ) ? true: false}
+                        className="multi-input"
+                        name="cotNoiDung"
+                        value={i.field}
+                        onChange={(e) =>{
+                          formik.setFieldValue("cotNoiDung",e.target.checked ? [...formik.values.cotNoiDung, e.target.value] : formik.values.cotNoiDung.filter(x => x.field !== e.target.value)) }}
+                        onBlur={formik.handleBlur}
+                      />
+                      {i.dpName}
+                    </label>)
+                    }
+
+                  )
+                })
+                // formik.values.cotNoiDung.map(item => 
+                //   item.map(i => 
+                //     (<label key={i.field}>
+                //       <input
+                //         type="checkbox"
+                //         defaultChecked="checked"
+                //         className="multi-input"
+                //         name="cotNoiDung"
+                //         value={i.field}
+                //         onChange={formik.handleChange}
+                //       />
+                //       {i.dpName}
+                //     </label>)
+                //   )
+                // )
+              }
             </div>
           </div>
         </div>
+        {
+          (formik.values.loaiGiayTo === 1 || formik.values.loaiGiayTo === 3) && (
+            <div className="formField">
+            <label>
+              Tải lên hình ảnh mặt trước <span className="warning-sign">(*)</span>
+            </label>
+            <div>
+              <UploadImages changeImage={handleFrontImage} />
+              {/* TODO: reset name of element "input file" in Information component */}
+            </div>
+          </div>
+          )
+        }
 
-        <div className="formField">
-          <label>
-            Tải lên hình ảnh mặt trước <span className="warning-sign">(*)</span>
-          </label>
-          <div>
-            <UploadImages changeImage={handleFrontImage} />
-            {/* TODO: reset name of element "input file" in Information component */}
+        {
+          (formik.values.loaiGiayTo === 2 || formik.values.loaiGiayTo === 3) && (
+            <div className="formField">
+            <label>
+              Tải lên hình ảnh mặt sau <span className="warning-sign">(*)</span>
+            </label>
+            <div>
+              <UploadImages changeImage={handlePostImage} />
+              {/* TODO: reset name of element "input file" in Information component */}
+            </div>
           </div>
-        </div>
-        <div className="formField">
-          <label>
-            Tải lên hình ảnh mặt sau <span className="warning-sign">(*)</span>
-          </label>
-          <div>
-            <UploadImages changeImage={handlePostImage} />
-            {/* TODO: reset name of element "input file" in Information component */}
-          </div>
-        </div>
+          )
+        }
+
+
         <div className="cta">
           <button type="button" onClick={onPreview} className="btn btn-primary">
             Xem trước

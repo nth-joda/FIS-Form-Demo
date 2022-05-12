@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import jsPDF from "jspdf";
 import Fake_Res from "../../../fake_response.json"
 import "./preview.css";
@@ -11,47 +11,60 @@ const Preview = (props) => {
     alert("Export To Excel");
   };
 
+  useEffect(()=> {
+    console.log("dasdas: ",props.jsonRes)
+  }, props.jsonRes)
+
   const toPDF = () => {
     alert("Export To PDF");
     var doc = new jsPDF();
     doc.setFontSize(8);
     doc.setFont("Times", "Italic");
-    doc.text(15, 25, fake_res);
+    // doc.text(15, 25, fake_res);
+    doc.text(15,25,JSON.stringify(fake_res, undefined, 2));
     doc.save("name.pdf");
   };
   return (
     <div className="preview">
       <h2>Xem trước</h2>
       <div className="preview1">
-        {props.preview &&
-        props.preview.frontImage.base64 &&
-        props.preview.postImage.base64 ? (
-          <div className="image_showing">
-            <div className="image_showing__item">
-              <p className="image_title">Mặt trước:</p>
-              <img
-                className="preview__img"
-                src={props.preview.frontImage.base64}
-                alt="preview_front"
-              />
-            </div>
-            <div className="image_showing__item">
+        <div className="image_showing">
+          {props.preview && props.preview.frontImage && props.preview.frontImage.base64 && (
+            
+              <div className="image_showing__item">
+                <p className="image_title">Mặt trước:</p>
+                <img
+                  className="preview__img"
+                  src={props.preview.frontImage.base64}
+                  alt="preview_front"
+                />
+              </div>)}
+            {props.preview && props.preview.backImage&& props.preview.backImage.base64 && (
+              <div className="image_showing__item">
+                <p className="image_title">Mặt sau:</p>
+                <img
+                  className="preview__img"
+                  src={props.preview.backImage.base64}
+                  alt="preview_post"
+                />
+              </div>)}
+        </div>
+
+
+        {/* {props.preview && props.preview.postImage ?(
+              <div className="image_showing__item">
               <p className="image_title">Mặt sau:</p>
               <img
                 className="preview__img"
                 src={props.preview.postImage.base64}
                 alt="preview_post"
               />
-            </div>
-          </div>
-        ) : (
-          <p>Bản xem trước của file</p>
-        )}
+            </div>)} */}
       </div>
       <div>
         {props.messageCode.code !== "OK" && (
           <h3 className="result_message red_message">
-            {props.messageCode.message}
+            {/* {props.messageCode.message} */}
           </h3>
         )}
         {props.messageCode.code === "OK" && (
@@ -74,7 +87,7 @@ const Preview = (props) => {
 
         {props.messageCode.code !== "OK" && (
           <div>
-            {JSON.stringify(fake_res, null, 4)}
+            {/* {JSON.stringify(fake_res, null, 4)} */}
           </div>
         )}
       </div>

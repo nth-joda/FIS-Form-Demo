@@ -1,0 +1,156 @@
+{"options":[
+    { 
+        "id": 1, 
+        "displayName": "Mặt trước CMND", 
+        "fields": [
+            { "field": "id", "dpName": "số chứng minh thư" },
+            { "field": "name", "dpName": "họ và tên" },
+            { "field": "dob", "dpName": "ngày sinh" },
+            { "field": "hometown", "dpName": "quê quán" },
+            { "field": "address", "dpName": "thường trú" },
+            {
+                "field": "address_town_code",
+                "dpName": "mã tỉnh/thành phố trong địa chỉ thường trú"
+            },
+            {
+                "field": "address_district_code",
+                "dpName": "mã quận/huyện trong địa chỉ thường trú"
+            },
+            {
+                "field": "address_ward_code",
+                "dpName": "mã phường/xã trong địa chỉ thường trú"
+            },
+            { "field": "hometown_town_code", "dpName": "mã tỉnh/thành phố trong quê quán" },
+            { "field": "hometown_district_code", "dpName": "mã quận/huyện trong quê quán" },
+            { "field": "hometown_ward_code", "dpName": "mã phường/xã trong quê quán" },
+            { "field": "address_town", "dpName": "tỉnh/thành phố trong địa chỉ thường trú" },
+            { "field": "address_district", "dpName": "quận/huyện trong địa chỉ thường trú" },
+            { "field": "address_ward", "dpName": "phường/xã trong địa chỉ thường trú" },
+            { "field": "hometown_town", "dpName": "tỉnh/thành phố trong quê quán" },
+            { "field": "hometown_district", "dpName": "quận/huyện trong quê quán" },
+            { "field": "hometown_ward", "dpName": "phường/xã trong quê quán" },
+            {
+                "field": "id_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất số thẻ"
+            },
+            {
+                "field": "name_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất họ và tên"
+            },
+            {
+                "field": "dob_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất ngày sinh"
+            },
+            {
+                "field": "hometown_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất quê quán"
+            },
+            {
+                "field": "address_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất thường trú"
+            }
+        ]          
+    },
+    { 
+        "id": 2, 
+        "displayName": "Mặt sau CMND", 
+        "fields":[
+            { "field": "ethnicity", "dpName": "dân tộc" },
+            { "field": "issue_date", "dpName": "ngày cấp" },
+            { "field": "religious", "dpName": "tôn giáo" },
+            { "field": "issued_at", "dpName": "nơi cấp" },
+            { "field": "image", "dpName": "ảnh đã cắt ra và căn chỉnh của giấy tờ" },
+            {
+                "field": "issue_date_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất ngày cấp"
+            },
+            {
+                "field": "issued_at_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất nơi cấp"
+            },
+            {
+                "field": "religious_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất tôn giáo"
+            },
+            {
+                "field": "ethnicity_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất dân tộc"
+            }
+        ]
+    },
+
+    { 
+        "id": 3, 
+        "displayName": "Hai mặt CMND", 
+        "fields":[
+            { "field": "id", "dpName": "số chứng minh thư" },
+            { "field": "name", "dpName": "họ và tên" },
+            { "field": "dob", "dpName": "ngày sinh" },
+            { "field": "hometown", "dpName": "quê quán" },
+            { "field": "address", "dpName": "thường trú" },
+            {
+                "field": "address_town_code",
+                "dpName": "mã tỉnh/thành phố trong địa chỉ thường trú"
+            },
+            {
+                "field": "address_district_code",
+                "dpName": "mã quận/huyện trong địa chỉ thường trú"
+            },
+            {
+                "field": "address_ward_code",
+                "dpName": "mã phường/xã trong địa chỉ thường trú"
+            },
+            { "field": "hometown_town_code", "dpName": "mã tỉnh/thành phố trong quê quán" },
+            { "field": "hometown_district_code", "dpName": "mã quận/huyện trong quê quán" },
+            { "field": "hometown_ward_code", "dpName": "mã phường/xã trong quê quán" },
+            { "field": "address_town", "dpName": "tỉnh/thành phố trong địa chỉ thường trú" },
+            { "field": "address_district", "dpName": "quận/huyện trong địa chỉ thường trú" },
+            { "field": "address_ward", "dpName": "phường/xã trong địa chỉ thường trú" },
+            { "field": "hometown_town", "dpName": "tỉnh/thành phố trong quê quán" },
+            { "field": "hometown_district", "dpName": "quận/huyện trong quê quán" },
+            { "field": "hometown_ward", "dpName": "phường/xã trong quê quán" },
+            {
+                "field": "id_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất số thẻ"
+            },
+            {
+                "field": "name_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất họ và tên"
+            },
+            {
+                "field": "dob_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất ngày sinh"
+            },
+            {
+                "field": "hometown_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất quê quán"
+            },
+            {
+                "field": "address_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất thường trú"
+            },
+            { "field": "ethnicity", "dpName": "dân tộc" },
+            { "field": "issue_date", "dpName": "ngày cấp" },
+            { "field": "religious", "dpName": "tôn giáo" },
+            { "field": "issued_at", "dpName": "nơi cấp" },
+            { "field": "image", "dpName": "ảnh đã cắt ra và căn chỉnh của giấy tờ" },
+            {
+                "field": "issue_date_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất ngày cấp"
+            },
+            {
+                "field": "issued_at_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất nơi cấp"
+            },
+            {
+                "field": "religious_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất tôn giáo"
+            },
+            {
+                "field": "ethnicity_confidence",
+                "dpName": "độ tin cậy của thông tin trích xuất dân tộc"
+            }
+        ]
+    }
+]
+}
