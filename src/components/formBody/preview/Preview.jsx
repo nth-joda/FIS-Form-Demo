@@ -59,7 +59,7 @@ const Preview = (props) => {
 
   useEffect(()=> {
     console.log("dasdas: ",props.jsonRes)
-  }, props.jsonRes)
+  }, [props.jsonRes])
 
   const toPDF = () => {
     alert("Export To PDF");
