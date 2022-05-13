@@ -19,7 +19,7 @@ const GetInput = (props) => {
     const [isReset,setIsReset] = useState(false);
     const setInitialData = (id) =>{
         setChosen_loaiGiayTo(id);
-        setChecked_list(data.find(x => x.id === id)? data.find(x => x.id === id).fields.map(item => item.field) : [])
+        setChecked_list(data.find(x => x.id === id)? data.find(x => x.id === id).fields.map(item => item) : [])
     }
     useEffect(() => {
         data && data.find(x => x.id === initialLoaiGiayToID) ? setInitialData(initialLoaiGiayToID) : setInitialData(0);
@@ -27,7 +27,7 @@ const GetInput = (props) => {
 
     useEffect(() => {
         formik.resetForm();
-        setChecked_list(data.find(x => x.id === chosen_loaiGiayTo) ? data.find(x => x.id === chosen_loaiGiayTo).fields.map(item => item.field) : [])
+        setChecked_list(data.find(x => x.id === chosen_loaiGiayTo) ? data.find(x => x.id === chosen_loaiGiayTo).fields.map(item => item) : [])
         console.log(chosen_loaiGiayTo)
         props.onReset();
         setIsReset(!isReset)
@@ -41,6 +41,21 @@ const GetInput = (props) => {
     }
 
     const handleSubmit = () => {
+        if (formik.values.cotNoiDung.length <=0)
+        {
+            alert("Điền đầy đủ các mục bắt buộc");
+            return;
+        }
+        if( formik.values.loaiGiayTo === 1 && (Object.keys(formik.values.frontImage).length <=0 ))
+        {
+            alert("Điền đầy đủ các mục bắt buộc");
+            return;
+        }
+        if( formik.values.loaiGiayTo === 3 && ((Object.keys(formik.values.frontImage).length <=0 ) && Object.keys(formik.values.backImage).length <=0) )
+        {
+            alert("Điền đầy đủ các mục bắt buộc");
+            return;
+        }
         props.onReset();
         setIsReset(!isReset);
         formik.resetForm();
@@ -95,13 +110,26 @@ const GetInput = (props) => {
             cotNoiDung: Yup.array().required("Required!"),
         }),
         onSubmit: (values) => {
-        if (
-            formik.values.cotNoiDung.length > 0 && (formik.values.frontImage || formik.values.backImage)
-        ) {
-            props.onBindingPreview(formik.values);
-            alert("Biểu mẫu đã lưu thành công!");
+            if (formik.values.cotNoiDung.length <=0)
+            {
+                alert("Điền đầy đủ các mục bắt buộc");
+                return;
+            }
+            if( formik.values.loaiGiayTo === 1 && (Object.keys(formik.values.frontImage).length <=0 ))
+            {
+                alert("Điền đầy đủ các mục bắt buộc");
+                return;
+            }
+            if( formik.values.loaiGiayTo === 3 && ((Object.keys(formik.values.frontImage).length <=0 ) && Object.keys(formik.values.backImage).length <=0) )
+            {
+                alert("Điền đầy đủ các mục bắt buộc");
+                return;
+            }
+            props.onReset();
+            setIsReset(!isReset);
             formik.resetForm();
-        } else alert("Điền đầy đủ các mục bắt buộc");
+            alert("Đã lưu thông tin thành cộng");
+            setInitialData(initialLoaiGiayToID);
         },
     });
 
@@ -190,11 +218,11 @@ const GetInput = (props) => {
                             <input 
                                 type="checkbox"
                                 defaultChecked={checked_list.find(x => x == item.field)? true : false}
-                                checked={checked_list.find(x => x == item.field)? true : false}
+                                checked={checked_list.find(x => x.field == item.field)? true : false}
                                 className="multi-input"
                                 name="cotNoiDung"
                                 value={item.field}
-                                onClick={(e) => {e.target.checked === true ? setChecked_list([...checked_list, e.target.value]): setChecked_list([...checked_list.filter(x => x !== e.target.value)])}}
+                                onClick={(e) => {e.target.checked === true ? setChecked_list([...checked_list, e.target.value]): setChecked_list([...checked_list.filter(x => x.field !== e.target.value)])}}
                             />
                             {item.dpName}
                         </label>

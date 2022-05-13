@@ -15,22 +15,28 @@ const two_Sided_CMND = "MIIBSwIBADCCASwGByqGSM44BAEwggEfAoGBAP1/U4EddRIpUt9KnC7s
 const FormBody = () => {
   const [preview, setPreview] = React.useState("");
   const [jsonRes, setJsonRes] = React.useState({});
+  const [vRes, setVRes] = React.useState({});
   const [messageCode, setMessageCode] = React.useState({
-    message: "undefined",
+    message: "",
     code: "undefined",
   });
   function handleReset(){
     setPreview("")
     setJsonRes({})
-    setMessageCode({
-      message: "Không có dữ liệu đầu vào",
-      code: "noinput",
-    })
+    if(messageCode.code !== "undefined"){
+      console.log("msg code", messageCode);
+      setMessageCode({
+        message: "Không có dữ liệu đầu vào",
+        code: "noinput",
+      })
+    }
+
   }
     const handlePreview = (values) => {
       setPreview(values);
       let body = {};
       let getResponse = {};
+      let getVResponse = {}
       
       if (values.loaiGiayTo === 1) {
           body = {
@@ -64,28 +70,38 @@ const FormBody = () => {
                   const data = JSON.parse(res.data.result.jsonResult);
                   if (data && arrayChecked !== undefined) {
                       let list_ob = [];
+                      let vList_ob = [];
                       data.map(item =>{
                           let dataInfo = item.info;
                           let infor_list = {};
+                          let vInfor_list = {};
                           for (let i = 0; i < arrayChecked.length; i++) {
-                              let object = dataInfo[arrayChecked[i]] ? { [arrayChecked[i]]: dataInfo[arrayChecked[i]] }: {};
-                              Object.assign(infor_list, object);
+                              // let object = dataInfo[arrayChecked[i]] ? { [arrayChecked[i].field]: dataInfo[arrayChecked[i].field] }: {};
+                              Object.assign(infor_list, dataInfo[arrayChecked[i].field] ? { [arrayChecked[i].field]: dataInfo[arrayChecked[i].field] }: {});
+                              Object.assign(vInfor_list, dataInfo[arrayChecked[i].field] ? { [arrayChecked[i].dpName]: dataInfo[arrayChecked[i].field] }: {});
                           }
                           if(item.type === "9_id_card_back"){
                               let back_Ob = {"side": "back_CMND", infor_list};
+                              let vBack_Ob = {"mặt": "Mặt sau CMND", vInfor_list};
                               list_ob.push(back_Ob);
+                              vList_ob.push(vBack_Ob);
                           }
                           else if(item.type === "9_id_card_front"){
                               let front_Ob = {"side": "front_CMND", infor_list};
+                              let vFront_Ob = {"mặt": "Mặt trước CMND", vInfor_list};
                               list_ob.push(front_Ob);
+                              vList_ob.push(vFront_Ob);
                           }
                       });
-                      Object.assign(getResponse,list_ob)
+                      Object.assign(getResponse, list_ob)
+                      Object.assign(getVResponse, vList_ob);
                       console.log("Get respone: ", getResponse);
-                      console.log("listOb", list_ob);
+                      console.log("Get V respone: ", getVResponse);
                       setJsonRes(getResponse);
+                      setVRes(getVResponse);
                   } else {
-                      setJsonRes(res.data.message)
+                      setJsonRes(res.data.message);
+                      setVRes(res.data.message);
                   }
               }
           }
@@ -107,7 +123,7 @@ const FormBody = () => {
     <div className="formBody">
       {/* <Information onBindingPreview={handlePreview} /> */}
       <GetInput onBindingPreview={handlePreview} onReset={handleReset} />
-      <Preview preview={preview} jsonRes={jsonRes} messageCode={messageCode}  />
+      <Preview preview={preview} vRes={vRes} jsonRes={jsonRes} messageCode={messageCode}  />
       {/* {console.log("passing to", jsonRes)} */}
     </div>
   );

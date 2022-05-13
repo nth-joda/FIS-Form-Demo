@@ -2,9 +2,54 @@ import React, {useState, useEffect} from "react";
 import jsPDF from "jspdf";
 import Fake_Res from "../../../fake_response.json"
 import CircularProgress from '@mui/material/CircularProgress';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
 import "./preview.css";
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 const Preview = (props) => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const fake_res = Fake_Res;
   const toWord = () => {};
 
@@ -65,8 +110,9 @@ const Preview = (props) => {
       <div>
         {props.messageCode.code !== "OK" && (
           <h3 className="result_message red_message">
-            {props.messageCode.code==="noinput" ? props.messageCode.message : <CircularProgress />}
-            
+            {props.messageCode.code==="noinput" && props.messageCode.message}
+            {props.messageCode.code==="loading" && <CircularProgress /> } 
+            {props.messageCode.code==="undefined" && props.messageCode.message}
           </h3>
           
         )}
@@ -79,20 +125,47 @@ const Preview = (props) => {
         )}
       </div>
       <div className="preview2">
-        {!props.jsonRes === {} && <p>Json {"{}"}</p>}
-        {props.jsonRes === {} && <p>Json {"{}"}</p>}
+            {props.messageCode.code === "OK" &&<Box sx={{ width: '100%' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                  <Tab label="Tiếng Việt" {...a11yProps(0)} />
+                  <Tab label="JSON" {...a11yProps(1)} />
+                </Tabs>
+              </Box>
+              <TabPanel value={value} index={0}>
+                {!props.vRes === {} && <p>Chưa có thông tin tiếng việt</p>}
+                {props.vRes === {} && <p>Chưa có thông tin tiếng việt</p>}
 
-        {props.messageCode.code === "OK" && (
-          <div>
-            <pre>{JSON.stringify(props.jsonRes, undefined, 2)}</pre>
-          </div>
-        )}
+                {props.messageCode.code === "OK" && (
+                  <div>
+                    <pre>{JSON.stringify(props.vRes, undefined, 2)}</pre>
+                  </div>
+                )}
 
-        {props.messageCode.code !== "OK" && (
-          <div>
-            {/* {JSON.stringify(fake_res, null, 4)} */}
-          </div>
-        )}
+                {props.messageCode.code !== "OK" && (
+                  <div>
+                  
+                  </div>
+                )}
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                {!props.jsonRes === {} && <p>Json {"{}"}</p>}
+                {props.jsonRes === {} && <p>Json {"{}"}</p>}
+
+                {props.messageCode.code === "OK" && (
+                  <div>
+                    <pre>{JSON.stringify(props.jsonRes, undefined, 2)}</pre>
+                  </div>
+                )}
+
+                {props.messageCode.code !== "OK" && (
+                  <div>
+                  
+                  </div>
+                )}
+              </TabPanel>
+            </Box>
+            }
       </div>
       <div className="cta">
         <button type="button" onClick={toWord} className="btn btn-word">
