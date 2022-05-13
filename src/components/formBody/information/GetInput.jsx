@@ -68,7 +68,7 @@ const GetInput = (props) => {
         formik.values.cotNoiDung = [...checked_list];
         formik.values.loaiGiayTo = chosen_loaiGiayTo;
         console.log("Preview: ",formik.values);
-        console.log(checked_list);
+        console.log("checkList : " ,checked_list);
         if (formik.values.cotNoiDung.length <=0)
         {
             alert("Điền đầy đủ các mục bắt buộc");
@@ -195,11 +195,11 @@ const GetInput = (props) => {
                 <div className="formField__input-multiCheck">
                 {
                     
-                    data.find(x => x.id == chosen_loaiGiayTo) ? data.find(x => x.id === chosen_loaiGiayTo).fields.map(item =>(
-                        <label key={checked_list.find(x => x == item.field)? item.field+"_checked" : item.field}>
+                    data.find(x => x.id === chosen_loaiGiayTo) ? data.find(x => x.id === chosen_loaiGiayTo).fields.map(item =>(
+                        <label key={checked_list.find(x => x === item.field)? item.field+"_checked" : item.field}>
                             <input 
                                 type="checkbox"
-                                defaultChecked={true}
+                                checked={checked_list.find(x => x.field === item.field) !== undefined ? true : false}
                                 //checked={checked_list.find(x => x.field === item.field)? true : false}
                                 className="multi-input"
                                 name="cotNoiDung"
