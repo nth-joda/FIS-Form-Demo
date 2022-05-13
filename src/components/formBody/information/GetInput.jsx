@@ -194,35 +194,17 @@ const GetInput = (props) => {
             <div className="formField__input">
                 <div className="formField__input-multiCheck">
                 {
-                    // options.filter(x => x.id === formik.values.loaiGiayTo).map((item) => {
-                    //     return item.fields.map((i) =>{
-                    //         return (
-                    //         <label key={i.field}>
-                    //         <input
-                    //             type="checkbox"
-                    //             defaultChecked={formik.values.cotNoiDung.find(x => x.field === i.field ) ? true: false}
-                    //             className="multi-input"
-                    //             name="cotNoiDung"
-                    //             value={i.field}
-                    //             onChange={(e) =>{
-                    //             formik.setFieldValue("cotNoiDung",e.target.checked ? [...formik.values.cotNoiDung, e.target.value] : formik.values.cotNoiDung.filter(x => x.field !== e.target.value)) }}
-                    //             onBlur={formik.handleBlur}
-                    //         />
-                    //         {i.dpName}
-                    //         </label>)
-                    //         })
-                    // })
                     
                     data.find(x => x.id == chosen_loaiGiayTo) ? data.find(x => x.id === chosen_loaiGiayTo).fields.map(item =>(
                         <label key={checked_list.find(x => x == item.field)? item.field+"_checked" : item.field}>
                             <input 
                                 type="checkbox"
-                                defaultChecked={checked_list.find(x => x == item.field)? true : false}
-                                checked={checked_list.find(x => x.field == item.field)? true : false}
+                                defaultChecked={true}
+                                //checked={checked_list.find(x => x.field === item.field)? true : false}
                                 className="multi-input"
                                 name="cotNoiDung"
                                 value={item.field}
-                                onClick={(e) => {e.target.checked === true ? setChecked_list([...checked_list, e.target.value]): setChecked_list([...checked_list.filter(x => x.field !== e.target.value)])}}
+                                onChange={(e) => { e.target.checked === true ? setChecked_list([...checked_list, item]): setChecked_list([...checked_list.filter(x => x.field !== item.field)])}}
                             />
                             {item.dpName}
                         </label>
