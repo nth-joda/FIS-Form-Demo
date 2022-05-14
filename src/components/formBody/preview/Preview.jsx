@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import jsPDF from "jspdf";
 import Fake_Res from "../../../fake_response.json"
 import CircularProgress from '@mui/material/CircularProgress';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import "./preview.css";
@@ -95,24 +94,15 @@ const Preview = (props) => {
                 />
               </div>)}
         </div>
-
-
-        {/* {props.preview && props.preview.postImage ?(
-              <div className="image_showing__item">
-              <p className="image_title">Mặt sau:</p>
-              <img
-                className="preview__img"
-                src={props.preview.postImage.base64}
-                alt="preview_post"
-              />
-            </div>)} */}
       </div>
       <div>
         {props.messageCode.code !== "OK" && (
           <h3 className="result_message red_message">
             {props.messageCode.code==="noinput" && props.messageCode.message}
-            {props.messageCode.code==="loading" && <CircularProgress /> } 
-            {props.messageCode.code==="undefined" && props.messageCode.message}
+            {props.messageCode.code==="loading" && <CircularProgress />}
+            {props.messageCode.code==="otherError" && <div> <CircularProgress /> <span className="msg-error">{props.messageCode.message}</span> </div> } 
+
+            {/* // {props.messageCode.code==="undefined" ? props.messageCode.message :} */}
           </h3>
           
         )}

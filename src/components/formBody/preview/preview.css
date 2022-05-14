@@ -35,6 +35,11 @@ pre {
 .preview__img {
   max-width: 100%;
 }
+.msg-error{
+  display: flex;
+  top: 20%;
+  transform: translate(10%,-160%);
+}
 
 .result_message {
   opacity: 0.7;

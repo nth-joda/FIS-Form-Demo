@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./formBody.css";
-import Information from "./information/Information";
 import Preview from "./preview/Preview";
 import axios from "axios";
 import GetInput from "./information/GetInput";
@@ -112,7 +111,10 @@ const FormBody = () => {
       })
       .catch((err) => {
           console.log("error at axios req: ", err);
-          alert(err.message);
+          setMessageCode({
+            code: "otherError",
+            message: err.message,
+          });
       });
       getResponse = {};
       console.log("Body: ", body);
