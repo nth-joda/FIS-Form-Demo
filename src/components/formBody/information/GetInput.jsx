@@ -225,6 +225,7 @@ const GetInput = (props) => {
                       .find((x) => x.id === chosen_loaiGiayTo)
                       .fields.map((item) => (
                         <label
+                          className="check_label"
                           key={
                             checked_list.find((x) => x === item.field)
                               ? item.field + "_checked"

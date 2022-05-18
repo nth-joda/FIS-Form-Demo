@@ -1,6 +1,11 @@
 .information {
   padding: 1.5rem 1.5rem;
 }
+
+.check_label {
+  cursor: pointer;
+}
+
 form {
   display: grid;
   grid-template-columns: 1fr;
@@ -24,8 +29,8 @@ form {
 
 .formField {
   display: grid;
-  grid-template-columns: 35% 60%;
-  gap: 2rem;
+  grid-template-columns: 30% 70%;
+  gap: 0.5rem;
 }
 
 .formField__input {
@@ -85,4 +90,5 @@ form {
   transform: scale(1.2);
   margin-right: 0.5rem;
   text-align: center;
+  cursor: pointer;
 }
