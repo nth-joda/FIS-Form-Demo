@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./information.css";
 import UploadImages from "../../uploader/UploadImages";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import CND from "../../../cotNhanDang copy 2.json"
+import CND from "../../../cotNhanDang copy 2.json";
 
 // TODO: Change this link to the real Database endpoint when the DB is ready.
-const fake_url= `https://abc.xyz.asdas/fakeapi`
+const fake_url = `https://abc.xyz.asdas/fakeapi`;
 
 const Information = (props) => {
   const [options, setOptions] = useState([]);
 
   const onPreview = () => {
-    console.log("Preview: ",formik.values);
-    if (formik.values.cotNoiDung.length <=0)
-    {
+    console.log("Preview: ", formik.values);
+    if (formik.values.cotNoiDung.length <= 0) {
       alert("Điền đầy đủ các mục bắt buộc");
       return;
     }
-    if( formik.values.loaiGiayTo === 1 && (Object.keys(formik.values.frontImage).length <=0 ))
-    {
+    if (
+      formik.values.loaiGiayTo === 1 &&
+      Object.keys(formik.values.frontImage).length <= 0
+    ) {
       alert("Điền đầy đủ các mục bắt buộc");
       return;
     }
-    if( formik.values.loaiGiayTo === 3 && ((Object.keys(formik.values.frontImage).length <=0 ) && Object.keys(formik.values.frontImage).length <=0) )
-    {
+    if (
+      formik.values.loaiGiayTo === 3 &&
+      Object.keys(formik.values.frontImage).length <= 0 &&
+      Object.keys(formik.values.backImage).length <= 0
+    ) {
       alert("Điền đầy đủ các mục bắt buộc");
       return;
     }
@@ -53,7 +57,8 @@ const Information = (props) => {
     }),
     onSubmit: (values) => {
       if (
-        formik.values.cotNoiDung.length > 0 && (formik.values.frontImage || formik.values.postImage)
+        formik.values.cotNoiDung.length > 0 &&
+        (formik.values.frontImage || formik.values.postImage)
       ) {
         props.onBindingPreview(formik.values);
         alert("Biểu mẫu đã lưu thành công!");
@@ -62,18 +67,19 @@ const Information = (props) => {
     },
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     setOptions(CND.options);
     formik.values.cotNoiDung = CND.options[0].fields;
-    console.log(CND.options[0].fields)
-  },[])
+    console.log(CND.options[0].fields);
+  }, []);
 
   useEffect(() => {
-    formik.values.cotNoiDung = CND.options.find(x => x.id === formik.values.loaiGiayTo).fields
+    formik.values.cotNoiDung = CND.options.find(
+      (x) => x.id === formik.values.loaiGiayTo
+    ).fields;
     setOptions(CND.options);
-    console.log(options, formik.values.loaiGiayTo); 
-
-  },[formik.values.loaiGiayTo])
+    console.log(options, formik.values.loaiGiayTo);
+  }, [formik.values.loaiGiayTo]);
 
   const handleFrontImage = (img) => {
     formik.setFieldValue("frontImage", img);
@@ -139,28 +145,46 @@ const Information = (props) => {
           <div className="formField__input">
             <div className="formField__input-multiCheck">
               {
-                options.filter(x => x.id === formik.values.loaiGiayTo).map((item) => {
-                  return item.fields.map((i) =>{
-                    return (
-                    <label key={i.field}>
-                      <input
-                        type="checkbox"
-                        defaultChecked={formik.values.cotNoiDung.find(x => x.field === i.field ) ? true: false}
-                        className="multi-input"
-                        name="cotNoiDung"
-                        value={i.field}
-                        onChange={(e) =>{
-                          formik.setFieldValue("cotNoiDung",e.target.checked ? [...formik.values.cotNoiDung, e.target.value] : formik.values.cotNoiDung.filter(x => x.field !== e.target.value)) }}
-                        onBlur={formik.handleBlur}
-                      />
-                      {i.dpName}
-                    </label>)
-                    }
-
-                  )
-                })
-                // formik.values.cotNoiDung.map(item => 
-                //   item.map(i => 
+                options
+                  .filter((x) => x.id === formik.values.loaiGiayTo)
+                  .map((item) => {
+                    return item.fields.map((i) => {
+                      return (
+                        <label key={i.field}>
+                          <input
+                            type="checkbox"
+                            defaultChecked={
+                              formik.values.cotNoiDung.find(
+                                (x) => x.field === i.field
+                              )
+                                ? true
+                                : false
+                            }
+                            className="multi-input"
+                            name="cotNoiDung"
+                            value={i.field}
+                            onChange={(e) => {
+                              formik.setFieldValue(
+                                "cotNoiDung",
+                                e.target.checked
+                                  ? [
+                                      ...formik.values.cotNoiDung,
+                                      e.target.value,
+                                    ]
+                                  : formik.values.cotNoiDung.filter(
+                                      (x) => x.field !== e.target.value
+                                    )
+                              );
+                            }}
+                            onBlur={formik.handleBlur}
+                          />
+                          {i.dpName}
+                        </label>
+                      );
+                    });
+                  })
+                // formik.values.cotNoiDung.map(item =>
+                //   item.map(i =>
                 //     (<label key={i.field}>
                 //       <input
                 //         type="checkbox"
@@ -178,23 +202,21 @@ const Information = (props) => {
             </div>
           </div>
         </div>
-        {
-          (formik.values.loaiGiayTo === 1 || formik.values.loaiGiayTo === 3) && (
-            <div className="formField">
+        {(formik.values.loaiGiayTo === 1 || formik.values.loaiGiayTo === 3) && (
+          <div className="formField">
             <label>
-              Tải lên hình ảnh mặt trước <span className="warning-sign">(*)</span>
+              Tải lên hình ảnh mặt trước{" "}
+              <span className="warning-sign">(*)</span>
             </label>
             <div>
               <UploadImages changeImage={handleFrontImage} />
               {/* TODO: reset name of element "input file" in Information component */}
             </div>
           </div>
-          )
-        }
+        )}
 
-        {
-          (formik.values.loaiGiayTo === 2 || formik.values.loaiGiayTo === 3) && (
-            <div className="formField">
+        {(formik.values.loaiGiayTo === 2 || formik.values.loaiGiayTo === 3) && (
+          <div className="formField">
             <label>
               Tải lên hình ảnh mặt sau <span className="warning-sign">(*)</span>
             </label>
@@ -203,9 +225,7 @@ const Information = (props) => {
               {/* TODO: reset name of element "input file" in Information component */}
             </div>
           </div>
-          )
-        }
-
+        )}
 
         <div className="cta">
           <button type="button" onClick={onPreview} className="btn btn-primary">

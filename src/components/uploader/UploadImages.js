@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 import "./uploadImages.css";
 const UploadImages = (props) => {
   const ref = useRef();
@@ -7,18 +7,15 @@ const UploadImages = (props) => {
     base64URL: "",
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     ref.current.value = "";
     setState({
       file: null,
       base64URL: "",
-    })
+    });
     console.log(props.isReset);
     console.log(state);
-
-  }, [props.isReset])
-
-
+  }, [props.isReset]);
 
   const getBase64 = (file) => {
     return new Promise((resolve) => {
@@ -56,7 +53,7 @@ const UploadImages = (props) => {
         props.changeImage(file);
       })
       .catch((err) => {
-        // console.log(err);
+        props.changeImage({ file: null, base64URL: "null img" });
       });
 
     setState({ file: e.target.files[0] });
